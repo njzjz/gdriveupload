@@ -107,10 +107,12 @@ class Combiner:
                 log.info("removing %s"%remove_path)
                 os.remove(remove_path)
 
-def upload(file_name, to_path):
+def upload(args):
+    file_name=args.file_name
+    to_path=args.to_path
     Uploader().upload(file_name, to_path)
 
-def combine():
+def combine(args):
     Combiner().combine()
 
 def cmd():
