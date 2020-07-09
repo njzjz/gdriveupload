@@ -4,6 +4,7 @@ import requests
 import os
 import uuid
 import math
+import json
 import logging
 import shutil
 import tempfile
@@ -79,7 +80,13 @@ class Uploader:
         response = requests.put(
             url, data=data, auth=(self.username, self.password))
         if response.status_code == requests.codes.ok:
-            log.info(response.text)
+            try:
+                json.loads(response.text)
+                log.info(response.text)
+            except ValueError:
+                if retry<5:
+                    log.warning("Upload %s failed. Retry..."%to_path)
+                    self.upload_to_cloudflare(data, to_path, retry=retry+1)
         elif retry<5:
             log.warning("Upload %s failed. Retry..."%to_path)
             self.upload_to_cloudflare(data, to_path, retry=retry+1)
