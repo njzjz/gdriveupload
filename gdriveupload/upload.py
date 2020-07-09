@@ -73,12 +73,19 @@ class Uploader:
             self.upload_to_cloudflare(
                 path_data, os.path.join(self.tmpdir, u + ".path"))
 
-    def upload_to_cloudflare(self, data, to_path):
+    def upload_to_cloudflare(self, data, to_path, retry=0):
         log.info("Upload to %s" % to_path)
         url = "/".join((self.website, to_path))
         response = requests.put(
             url, data=data, auth=(self.username, self.password))
-        log.info(response.text)
+        if response.status_code == requests.codes.ok:
+            log.info(response.text)
+        elif retry<5:
+            log.warning("Upload %s failed. Retry..."%to_path)
+            self.upload_to_cloudflare(data, to_path, retry=retry+1)
+        else:
+            raise RuntimeError("Upload %s failed"%to_path)
+
 
 
 class Combiner:
