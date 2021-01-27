@@ -81,6 +81,8 @@ class Uploader:
             url, data=data, auth=(self.username, self.password))
         if response.status_code == requests.codes.ok:
             try:
+                if response.json() is None:
+                    raise ValueError("null response")
                 json.loads(response.text)
                 log.info(response.text)
             except ValueError:
