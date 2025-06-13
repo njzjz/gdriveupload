@@ -10,7 +10,7 @@ if __name__ == '__main__':
     setup(name='gdriveupload',
           url='https://github.com/njzjz/gdriveupload',
           author='Jinzhe Zeng',
-          author_email='jzzeng@stu.ecnu.edu.cn',
+          author_email='jinzhe.zeng@ustc.edu.cn',
           packages=find_packages(),
           python_requires='~=3.6',
           install_requires=['requests', 'tqdm'],
